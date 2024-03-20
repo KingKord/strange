@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  strange:
+    build:
+      context: .
+      dockerfile: strange-service.dockerfile
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+#    environment:
+      #      dbType: "postgres"
+#      DSN: "host=postgres port=5432 user=postgres password=password dbname=urls sslmode=disable timezone=UTC connect_timeout=5"
+#      dbURL: "postgres://postgres:password@postgres:5432/urls?sslmode=disable"
+#      migrationPath: "file:///app"
+
+  postgres:
+    image: 'postgres:14.2-alpine'
+    ports:
+      - "5433:5432"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: urls
+#    volumes:
+#      - ./db-data/postgres/:/var/lib/postgresql/data/
