@@ -1,5 +1,6 @@
 package model
 
+// Card struct
 type Card struct {
 	Id          int
 	Name        string
