@@ -18,7 +18,7 @@ FROM alpine:latest
 
 RUN mkdir /app
 
-#COPY --from=builder /app/migrations /app
+COPY --from=builder /app/migrations /app
 COPY --from=builder /app/testApp /app
 
 CMD [ "/app/testApp" ]
