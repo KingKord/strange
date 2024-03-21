@@ -1,0 +1,32 @@
+basePath: /api/v1/
+definitions:
+  handlers.jsonResponse:
+    properties:
+      data: {}
+      error:
+        type: boolean
+      message:
+        type: string
+    type: object
+host: localhost:3333
+info:
+  contact: {}
+  title: strange API
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: Get the root endpoint
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.jsonResponse'
+      summary: Get root endpoint
+      tags:
+      - Root
+swagger: "2.0"

@@ -9,6 +9,8 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+    ports:
+      - "3333:3333"
 #    environment:
       #      dbType: "postgres"
 #      DSN: "host=postgres port=5432 user=postgres password=password dbname=urls sslmode=disable timezone=UTC connect_timeout=5"
