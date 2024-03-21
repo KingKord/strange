@@ -1,15 +1,25 @@
 package handlers
 
-type Handler interface {
-	root()
-}
-type handlers struct {
-}
+import (
+	"log"
+	"net/http"
+)
 
-func NewHandlers() Handler {
-	return handlers{}
+type Handlers struct {
 }
 
-func (h handlers) root() {
+func NewHandlers() Handlers {
+	return Handlers{}
+}
 
+func (h Handlers) Root(w http.ResponseWriter, r *http.Request) {
+	log.Println("got root successfully!")
+}
+
+func (h Handlers) DaySchedule(w http.ResponseWriter, r *http.Request) {
+	log.Println("got root successfully!")
+}
+
+func (h Handlers) AssignMeet(w http.ResponseWriter, r *http.Request) {
+	log.Println("got root successfully!")
 }
