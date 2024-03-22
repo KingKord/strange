@@ -1,16 +1,9 @@
 package repository
 
-import "database/sql"
+import (
+	"github.com/KingKord/strange/internal/model"
+)
 
 type Repository interface {
-}
-
-type postgresDBRepo struct {
-	DB *sql.DB
-}
-
-func NewPostgresRepo(conn *sql.DB) Repository {
-	return &postgresDBRepo{
-		DB: conn,
-	}
+	AssignMeet(card model.Card) error
 }

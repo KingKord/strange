@@ -1,16 +1,24 @@
 package handlers
 
 import (
+	"context"
+	"fmt"
 	"github.com/KingKord/strange/internal/helpers"
+	"github.com/KingKord/strange/internal/model"
+	"github.com/KingKord/strange/internal/services"
 	"log"
 	"net/http"
+	"time"
 )
 
 type Handlers struct {
+	scheduleService services.ScheduleService
 }
 
-func NewHandlers() Handlers {
-	return Handlers{}
+func NewHandlers(scheduleService services.ScheduleService) Handlers {
+	return Handlers{
+		scheduleService: scheduleService,
+	}
 }
 
 type jsonResponse struct {
@@ -36,7 +44,25 @@ func (h Handlers) Root(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h Handlers) DaySchedule(w http.ResponseWriter, r *http.Request) {
-	log.Println("got root successfully!")
+	requestPayload := struct {
+		Name        string    `json:"name"`
+		UserID      int       `json:"user_id"`
+		Description string    `json:"description"`
+		DateFrom    time.Time `json:"date_from"`
+		DateTo      time.Time `json:"date_to"`
+	}{}
+
+	_ = helpers.ReadJSON(w, r, &requestPayload)
+	err := h.scheduleService.AssignMeet(context.Background(), model.Card{})
+	if err != nil {
+		log.Println(err)
+		_ = helpers.ErrorJSON(w, fmt.Errorf("scheduleService.AssignMeet: %w", err), http.StatusInternalServerError)
+	}
+	log.Println("success assigned!")
+
+	_ = helpers.WriteJSON(w, http.StatusOK, jsonResponse{
+		Message: "successfully assigned meet!",
+	})
 }
 
 func (h Handlers) AssignMeet(w http.ResponseWriter, r *http.Request) {
