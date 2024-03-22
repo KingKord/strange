@@ -9,6 +9,7 @@ import (
 	"github.com/KingKord/strange/internal/services"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -34,7 +35,7 @@ type jsonResponse struct {
 // @Tags Root
 // @Accept json
 // @Produce json
-// @Success 200 {object} jsonResponse
+// @Success 200 {object} string
 // @Router / [get]
 func (h Handlers) Root(w http.ResponseWriter, r *http.Request) {
 	log.Println("got root successfully!")
@@ -59,12 +60,14 @@ type requestPayload struct {
 // @Accept json
 // @Produce json
 // @Param date query string true "Date of the day (YYYY-MM-DD)"
-// @Success 200 {object} jsonResponse "Successful assignment"
-// @Failure 400 {object} jsonResponse "Invalid date format"
-// @Failure 500 {object} jsonResponse "Internal server error"
+// @Param user-id query string true "user ID"
+// @Success 200 {object} string "Successful assignment"
+// @Failure 400 {object} string "Invalid date format"
+// @Failure 500 {object} string "Internal server error"
 // @Router /schedule/day [get]
 func (h Handlers) DaySchedule(w http.ResponseWriter, r *http.Request) {
 	date := r.URL.Query().Get("date")
+	userID := r.URL.Query().Get("user-id")
 	if date == "" {
 		_ = helpers.ErrorJSON(w, errors.New("date parameter is required"), http.StatusBadRequest)
 		return
@@ -76,9 +79,13 @@ func (h Handlers) DaySchedule(w http.ResponseWriter, r *http.Request) {
 		_ = helpers.ErrorJSON(w, fmt.Errorf("invalid date format: %v", err), http.StatusBadRequest)
 		return
 	}
-
+	parsedUserID, err := strconv.Atoi(userID)
+	if err != nil {
+		_ = helpers.ErrorJSON(w, fmt.Errorf("invalid int format: %v", err), http.StatusBadRequest)
+		return
+	}
 	// Ваш код для обработки запроса с использованием даты
-	daySchedule, err := h.scheduleService.DaySchedule(context.Background(), parsedDate)
+	daySchedule, err := h.scheduleService.DaySchedule(context.Background(), parsedDate, parsedUserID)
 	if err != nil {
 		return
 	}
@@ -96,8 +103,8 @@ func (h Handlers) DaySchedule(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param requestPayload body requestPayload true "Request payload"
-// @Success 200 {object} jsonResponse "Successful assignment"
-// @Failure 500 {object} jsonResponse "Internal server error"
+// @Success 200 {object} string "Successful assignment"
+// @Failure 500 {object} string "Internal server error"
 // @Router /schedule/reserve [post]
 func (h Handlers) AssignMeet(w http.ResponseWriter, r *http.Request) {
 	req := requestPayload{}

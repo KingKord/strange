@@ -25,7 +25,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.jsonResponse"
+                            "type": "string"
                         }
                     }
                 }
@@ -51,25 +51,32 @@
                         "name": "date",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "user ID",
+                        "name": "user-id",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "Successful assignment",
                         "schema": {
-                            "$ref": "#/definitions/handlers.jsonResponse"
+                            "type": "string"
                         }
                     },
                     "400": {
                         "description": "Invalid date format",
                         "schema": {
-                            "$ref": "#/definitions/handlers.jsonResponse"
+                            "type": "string"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.jsonResponse"
+                            "type": "string"
                         }
                     }
                 }
@@ -103,13 +110,13 @@
                     "200": {
                         "description": "Successful assignment",
                         "schema": {
-                            "$ref": "#/definitions/handlers.jsonResponse"
+                            "type": "string"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/handlers.jsonResponse"
+                            "type": "string"
                         }
                     }
                 }
@@ -117,18 +124,6 @@
         }
     },
     "definitions": {
-        "handlers.jsonResponse": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "error": {
-                    "type": "boolean"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
         "handlers.requestPayload": {
             "type": "object",
             "properties": {
