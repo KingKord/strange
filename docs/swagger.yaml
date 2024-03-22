@@ -1,13 +1,5 @@
 basePath: /api/v1/
 definitions:
-  handlers.jsonResponse:
-    properties:
-      data: {}
-      error:
-        type: boolean
-      message:
-        type: string
-    type: object
   handlers.requestPayload:
     properties:
       date_from:
@@ -38,7 +30,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.jsonResponse'
+            type: string
       summary: Get root endpoint
       tags:
       - Root
@@ -53,21 +45,26 @@ paths:
         name: date
         required: true
         type: string
+      - description: user ID
+        in: query
+        name: user-id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: Successful assignment
           schema:
-            $ref: '#/definitions/handlers.jsonResponse'
+            type: string
         "400":
           description: Invalid date format
           schema:
-            $ref: '#/definitions/handlers.jsonResponse'
+            type: string
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/handlers.jsonResponse'
+            type: string
       summary: Get meets for day
       tags:
       - Schedule
@@ -89,11 +86,11 @@ paths:
         "200":
           description: Successful assignment
           schema:
-            $ref: '#/definitions/handlers.jsonResponse'
+            type: string
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/handlers.jsonResponse'
+            type: string
       summary: Assign meet for the day
       tags:
       - Schedule

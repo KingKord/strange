@@ -62,7 +62,7 @@ where (
 	return nil
 }
 
-func (p postgresDBRepo) DaySchedule(day time.Time) ([]model.Card, error) {
+func (p postgresDBRepo) DaySchedule(day time.Time, userID int) ([]model.Card, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -75,9 +75,10 @@ func (p postgresDBRepo) DaySchedule(day time.Time) ([]model.Card, error) {
         SELECT id, user_id, name, description, date_from, date_to 
         FROM schedule
         WHERE date_from >= $1 AND date_from < $2
+        and user_id = $3
     `
 	// Выполняем запрос к базе данных
-	rows, err := p.DB.QueryContext(ctx, query, startOfDay, endOfDay)
+	rows, err := p.DB.QueryContext(ctx, query, startOfDay, endOfDay, userID)
 	if err != nil {
 		return nil, err
 	}

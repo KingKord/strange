@@ -27,8 +27,8 @@ func (s ScheduleService) AssignMeet(ctx context.Context, card model.Card) error 
 	return nil
 }
 
-func (s ScheduleService) DaySchedule(ctx context.Context, day time.Time) ([]model.Card, error) {
-	cards, err := s.repo.DaySchedule(day)
+func (s ScheduleService) DaySchedule(ctx context.Context, day time.Time, userID int) ([]model.Card, error) {
+	cards, err := s.repo.DaySchedule(day, userID)
 	if err != nil {
 		return nil, fmt.Errorf("repo.AssignMeet: %w", err)
 	}

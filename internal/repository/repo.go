@@ -7,5 +7,5 @@ import (
 
 type Repository interface {
 	AssignMeet(card model.Card) error
-	DaySchedule(day time.Time) ([]model.Card, error)
+	DaySchedule(day time.Time, userID int) ([]model.Card, error)
 }
