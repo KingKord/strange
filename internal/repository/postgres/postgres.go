@@ -35,8 +35,8 @@ where (
 	var count int
 
 	err := p.DB.QueryRowContext(ctx, checkQuery,
-		time.Now(),
-		time.Now(),
+		card.From,
+		card.To,
 	).Scan(&count)
 	if err != nil {
 		return fmt.Errorf("DB.QueryRowContext: %w", err)
@@ -60,4 +60,42 @@ where (
 	}
 
 	return nil
+}
+
+func (p postgresDBRepo) DaySchedule(day time.Time) ([]model.Card, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	// Получаем начало и конец указанного дня
+	startOfDay := time.Date(day.Year(), day.Month(), day.Day(), 0, 0, 0, 0, day.Location())
+	endOfDay := startOfDay.Add(24 * time.Hour)
+
+	// Формируем SQL-запрос для извлечения карточек на указанный день
+	query := `
+        SELECT id, user_id, name, description, date_from, date_to 
+        FROM schedule
+        WHERE date_from >= $1 AND date_from < $2
+    `
+	// Выполняем запрос к базе данных
+	rows, err := p.DB.QueryContext(ctx, query, startOfDay, endOfDay)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Проходим по результатам запроса и сканируем их в структуру model.Card
+	var cards []model.Card
+	for rows.Next() {
+		var card model.Card
+		err := rows.Scan(&card.Id, &card.UserID, &card.Name, &card.Description, &card.From, &card.To)
+		if err != nil {
+			return nil, err
+		}
+		cards = append(cards, card)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return cards, nil
 }

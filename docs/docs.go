@@ -37,6 +37,90 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/schedule/day": {
+            "get": {
+                "description": "Get meets for day",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Get meets for day",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Date of the day (YYYY-MM-DD)",
+                        "name": "date",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful assignment",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.jsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid date format",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.jsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/schedule/reserve": {
+            "post": {
+                "description": "Assign meet for the day",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Assign meet for the day",
+                "parameters": [
+                    {
+                        "description": "Request payload",
+                        "name": "requestPayload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.requestPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful assignment",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.jsonResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -49,6 +133,26 @@ const docTemplate = `{
                 },
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "handlers.requestPayload": {
+            "type": "object",
+            "properties": {
+                "date_from": {
+                    "type": "string"
+                },
+                "date_to": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         }

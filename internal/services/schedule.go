@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/KingKord/strange/internal/model"
 	"github.com/KingKord/strange/internal/repository"
+	"time"
 )
 
 type ScheduleService struct {
@@ -24,4 +25,13 @@ func (s ScheduleService) AssignMeet(ctx context.Context, card model.Card) error 
 	}
 
 	return nil
+}
+
+func (s ScheduleService) DaySchedule(ctx context.Context, day time.Time) ([]model.Card, error) {
+	cards, err := s.repo.DaySchedule(day)
+	if err != nil {
+		return nil, fmt.Errorf("repo.AssignMeet: %w", err)
+	}
+
+	return cards, nil
 }

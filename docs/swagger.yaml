@@ -8,6 +8,19 @@ definitions:
       message:
         type: string
     type: object
+  handlers.requestPayload:
+    properties:
+      date_from:
+        type: string
+      date_to:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      user_id:
+        type: integer
+    type: object
 host: localhost:3333
 info:
   contact: {}
@@ -29,4 +42,59 @@ paths:
       summary: Get root endpoint
       tags:
       - Root
+  /schedule/day:
+    get:
+      consumes:
+      - application/json
+      description: Get meets for day
+      parameters:
+      - description: Date of the day (YYYY-MM-DD)
+        in: query
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful assignment
+          schema:
+            $ref: '#/definitions/handlers.jsonResponse'
+        "400":
+          description: Invalid date format
+          schema:
+            $ref: '#/definitions/handlers.jsonResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handlers.jsonResponse'
+      summary: Get meets for day
+      tags:
+      - Schedule
+  /schedule/reserve:
+    post:
+      consumes:
+      - application/json
+      description: Assign meet for the day
+      parameters:
+      - description: Request payload
+        in: body
+        name: requestPayload
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.requestPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful assignment
+          schema:
+            $ref: '#/definitions/handlers.jsonResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handlers.jsonResponse'
+      summary: Assign meet for the day
+      tags:
+      - Schedule
 swagger: "2.0"
