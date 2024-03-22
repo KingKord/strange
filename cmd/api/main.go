@@ -5,6 +5,8 @@ import (
 	"fmt"
 	_ "github.com/KingKord/strange/docs"
 	"github.com/KingKord/strange/internal/helpers"
+	"github.com/KingKord/strange/internal/repository/postgres"
+	"github.com/KingKord/strange/internal/services"
 	"os"
 	"time"
 
@@ -42,7 +44,9 @@ func main() {
 
 	helpers.MigrateUp()
 
-	newHandlers := handlers.NewHandlers()
+	repo := postgres.NewPostgresRepo(conn)
+	scheduleService := services.NewScheduleService(repo)
+	newHandlers := handlers.NewHandlers(scheduleService)
 
 	log.Println(fmt.Sprintf("Starting service on port %s", port))
 	err := http.ListenAndServe(fmt.Sprintf(":%s", port), getRoutes(newHandlers))
