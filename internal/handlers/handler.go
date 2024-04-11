@@ -87,9 +87,9 @@ func (h Handlers) DaySchedule(w http.ResponseWriter, r *http.Request) {
 	// Ваш код для обработки запроса с использованием даты
 	daySchedule, err := h.scheduleService.DaySchedule(context.Background(), parsedDate, parsedUserID)
 	if err != nil {
+		_ = helpers.ErrorJSON(w, fmt.Errorf("scheduleService.DaySchedule: %v", err), http.StatusInternalServerError)
 		return
 	}
-	// Пример:
 	_ = helpers.WriteJSON(w, http.StatusOK, jsonResponse{
 		Message: fmt.Sprintf("Successfully got meets for %s", parsedDate.Format("2006-01-02")),
 		Data:    daySchedule,
