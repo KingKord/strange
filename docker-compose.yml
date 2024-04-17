@@ -13,14 +13,14 @@ services:
       - "3333:3333"
     environment:
       dbType: "postgres"
-      DSN: "host=postgres port=5432 user=postgres password=password dbname=strange sslmode=disable timezone=UTC connect_timeout=5"
-      dbURL: "postgres://postgres:password@postgres:5432/strange?sslmode=disable"
+      DSN: "host=postgres port=5431 user=postgres password=password dbname=strange sslmode=disable timezone=UTC connect_timeout=5"
+      dbURL: "postgres://postgres:password@postgres:5431/strange?sslmode=disable"
       migrationPath: "file:///app"
 
   postgres:
     image: 'postgres:14.2-alpine'
     ports:
-      - "5432:5432"
+      - "5431:5431"
     restart: always
     deploy:
       mode: replicated
