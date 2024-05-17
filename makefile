@@ -19,3 +19,12 @@ swag:
 	@echo Done!
 
 restart: down up_build
+
+gotest:
+	go test ./...
+
+
+lint:
+	golangci-lint run
+
+lgbt: lint gotest

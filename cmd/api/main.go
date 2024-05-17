@@ -48,7 +48,7 @@ func main() {
 	scheduleService := services.NewScheduleService(repo)
 	newHandlers := handlers.NewHandlers(scheduleService)
 
-	log.Println(fmt.Sprintf("Starting service on port %s", port))
+	log.Printf("Starting service on port %s", port)
 	err := http.ListenAndServe(fmt.Sprintf(":%s", port), getRoutes(newHandlers))
 	if err != nil {
 		log.Fatalf("cannot start the application due: %s", err)
