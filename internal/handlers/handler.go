@@ -7,6 +7,7 @@ import (
 	"github.com/KingKord/strange/internal/helpers"
 	"github.com/KingKord/strange/internal/model"
 	"github.com/KingKord/strange/internal/services"
+	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"log"
 	"net/http"
 	"strconv"
@@ -108,9 +109,19 @@ func (h Handlers) DaySchedule(w http.ResponseWriter, r *http.Request) {
 // @Router /schedule/reserve [post]
 func (h Handlers) AssignMeet(w http.ResponseWriter, r *http.Request) {
 	req := requestPayload{}
+	err := helpers.ReadJSON(w, r, &req)
+	if err != nil {
+		_ = helpers.ErrorJSON(w, fmt.Errorf("helpers.ReadJSON: %w", err), http.StatusBadRequest)
+		return
+	}
 
-	_ = helpers.ReadJSON(w, r, &req)
-	err := h.scheduleService.AssignMeet(context.Background(), model.Card{
+	err = validateAssignMeetRequest(req)
+	if err != nil {
+		_ = helpers.ErrorJSON(w, fmt.Errorf("validateAssignMeetRequest: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	err = h.scheduleService.AssignMeet(context.Background(), model.Card{
 		Name:        req.Name,
 		UserID:      req.UserID,
 		Description: req.Description,
@@ -126,4 +137,16 @@ func (h Handlers) AssignMeet(w http.ResponseWriter, r *http.Request) {
 	_ = helpers.WriteJSON(w, http.StatusOK, jsonResponse{
 		Message: "successfully assigned meet!",
 	})
+}
+
+func validateAssignMeetRequest(req requestPayload) error {
+	if req.DateFrom.After(req.DateTo) {
+		return fmt.Errorf("invalid date interval: from-%v to-%v", req.DateFrom, req.DateTo)
+	}
+
+	return validation.ValidateStruct(
+		&req,
+		validation.Field(&req.Name, validation.Required, validation.Length(1, 1000)),
+		validation.Field(&req.Description, validation.Length(0, 1000)),
+	)
 }

@@ -17,12 +17,59 @@ func TestHandlers(t *testing.T) {
 		expectedStatusCode int
 		URL                string
 		method             string
+		body               string
 	}{
 		{
 			name:               "assign meet",
 			expectedStatusCode: http.StatusOK,
 			URL:                "/api/v1/schedule/reserve",
 			method:             "post",
+			body: `
+{
+  "name": "Important Meeting",
+  "user_id": 123,
+  "description": "Discussion of project deadlines",
+  "date_from": "2024-03-22T09:00:00Z",
+  "date_to": "2024-03-22T10:00:00Z"
+}
+`,
+		},
+		{
+			name:               "invalid name",
+			expectedStatusCode: http.StatusBadRequest,
+			URL:                "/api/v1/schedule/reserve",
+			method:             "post",
+			body: `
+{
+  "name": "",
+  "user_id": 123,
+  "description": "Discussion of project deadlines",
+  "date_from": "2024-03-22T09:00:00Z",
+  "date_to": "2024-03-22T10:00:00Z"
+}
+`,
+		},
+		{
+			name:               "from date is after to date",
+			expectedStatusCode: http.StatusBadRequest,
+			URL:                "/api/v1/schedule/reserve",
+			method:             "post",
+			body: `
+{
+  "name": "Important Meeting",
+  "user_id": 123,
+  "description": "Discussion of project deadlines",
+  "date_from": "2024-03-22T10:00:00Z",
+  "date_to": "2024-03-22T9:00:00Z"
+}
+`,
+		},
+		{
+			name:               "assign meet empty body",
+			expectedStatusCode: http.StatusBadRequest,
+			URL:                "/api/v1/schedule/reserve",
+			method:             "post",
+			body:               ``,
 		},
 		{
 			name:               "root",
@@ -58,7 +105,7 @@ func TestHandlers(t *testing.T) {
 			)
 
 			if tt.method == "post" {
-				response, err = ts.Client().Post(ts.URL+tt.URL, "application/json", bytes.NewBuffer([]byte(``)))
+				response, err = ts.Client().Post(ts.URL+tt.URL, "application/json", bytes.NewBuffer([]byte(tt.body)))
 			} else {
 				response, err = ts.Client().Get(ts.URL + tt.URL)
 			}
