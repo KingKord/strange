@@ -4,9 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"time"
+
 	"github.com/KingKord/strange/internal/model"
 	"github.com/KingKord/strange/internal/repository"
-	"time"
 )
 
 const dbTimeout = time.Second * 3

@@ -1,3 +1,5 @@
+lgbt: lint gotest format
+
 up:
 	@echo "Starting docker images..."
 	docker-compose up -d
@@ -27,4 +29,6 @@ gotest:
 lint:
 	golangci-lint run
 
-lgbt: lint gotest
+
+format:
+	smartimports .

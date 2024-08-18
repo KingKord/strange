@@ -2,9 +2,10 @@ package test_repo
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/KingKord/strange/internal/model"
 	"github.com/KingKord/strange/internal/repository"
-	"time"
 )
 
 type testRepo struct{}

@@ -3,25 +3,24 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/KingKord/strange/docs"
-	"github.com/KingKord/strange/internal/helpers"
-	"github.com/KingKord/strange/internal/repository/postgres"
-	"github.com/KingKord/strange/internal/services"
-	httpSwagger "github.com/swaggo/http-swagger"
+	"log"
+	"net/http"
 	"os"
 	"time"
 
+	_ "github.com/KingKord/strange/docs"
 	"github.com/KingKord/strange/internal/handlers"
+	"github.com/KingKord/strange/internal/helpers"
+	"github.com/KingKord/strange/internal/repository/postgres"
+	"github.com/KingKord/strange/internal/services"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
-	"log"
-	"net/http"
-
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/jackc/pgconn"
 	_ "github.com/jackc/pgx/v4"
 	_ "github.com/jackc/pgx/v4/stdlib"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 const port = "3333"
