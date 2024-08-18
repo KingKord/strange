@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/golang-migrate/migrate/v4"
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/golang-migrate/migrate/v4"
 )
 
 type JsonResponse struct {

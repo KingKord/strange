@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"github.com/KingKord/strange/internal/model"
 	"time"
+
+	"github.com/KingKord/strange/internal/model"
 )
 
 type Repository interface {

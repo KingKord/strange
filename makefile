@@ -1,3 +1,5 @@
+lgbt: lint gotest format
+
 up:
 	@echo "Starting docker images..."
 	docker-compose up -d
@@ -19,3 +21,14 @@ swag:
 	@echo Done!
 
 restart: down up_build
+
+gotest:
+	go test ./...
+
+
+lint:
+	golangci-lint run
+
+
+format:
+	smartimports .

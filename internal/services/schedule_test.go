@@ -2,13 +2,14 @@ package services
 
 import (
 	"context"
+	"reflect"
+	"testing"
+	"time"
+
 	"github.com/KingKord/strange/internal/model"
 	"github.com/KingKord/strange/internal/repository"
 	"github.com/KingKord/strange/internal/repository/postgres"
 	"github.com/KingKord/strange/internal/repository/test_repo"
-	"reflect"
-	"testing"
-	"time"
 )
 
 func TestNewScheduleService(t *testing.T) {

@@ -3,9 +3,10 @@ package services
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/KingKord/strange/internal/model"
 	"github.com/KingKord/strange/internal/repository"
-	"time"
 )
 
 type ScheduleService struct {

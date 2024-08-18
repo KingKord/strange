@@ -2,12 +2,13 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/KingKord/strange/internal/repository/test_repo"
 	"github.com/KingKord/strange/internal/services"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
 	httpSwagger "github.com/swaggo/http-swagger"
-	"net/http"
 )
 
 func getRoutes(handler Handlers) http.Handler {
